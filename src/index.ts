@@ -1,1 +1,1 @@
-console.info('Hello, world!');
+import 'dotenv/config';
