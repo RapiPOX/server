@@ -12,12 +12,23 @@ export default async function (event: NostrEvent, res: ActionResponse) {
     const { url, ...rest } = args;
     const httpResponse = await fetch(url, rest);
 
-    res({
-      kind: 20001,
-      content: JSON.stringify(await httpResponse.json()),
-      tags: [],
-      created_at: Math.floor(Date.now() / 1000),
-    });
+    try {
+      const jsonResponse = await httpResponse.json();
+      res({
+        kind: 20001,
+        content: JSON.stringify(jsonResponse),
+        tags: [],
+        created_at: Math.floor(Date.now() / 1000),
+      });
+    } catch (e) {
+      console.info(`Status code: ${httpResponse.status}`);
+      res({
+        kind: 20001,
+        content: 'invalid json',
+        tags: [['error', 'Invalid JSON response from server.']],
+        created_at: Math.floor(Date.now() / 1000),
+      });
+    }
   } catch (e) {
     console.error(e);
   }
