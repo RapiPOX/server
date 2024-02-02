@@ -1,11 +1,15 @@
+// Thirdparty
 import {
-  EventTemplate,
-  NostrEvent,
+  type EventTemplate,
+  type NostrEvent,
   finalizeEvent,
   getPublicKey,
 } from 'nostr-tools';
+
+// Local
 import { Signer } from '../types/signer';
 
+// Gets private key from environment
 const privateKey = Uint8Array.from(
   Buffer.from(process.env.PRIVATE_KEY!, 'hex'),
 );

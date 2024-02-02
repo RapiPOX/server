@@ -1,22 +1,16 @@
+// Main depedencies
 import 'dotenv/config';
 import 'websocket-polyfill';
 
+// Thirdpaty
+import { Relay } from 'nostr-tools';
+
+// Local
 import actions from './actions';
-import { Event, NostrEvent, Relay, getPublicKey } from 'nostr-tools';
 import signer from './services/signer';
+import ActionManager from './services/actionManager';
 
-const handleEvent = async (event: NostrEvent) => {
-  console.info('Handling Event');
-  const action = event.tags.find((tag) => tag[0] === 'action')![1];
-  console.info('ACTION: ', action);
-
-  if (!(action in actions)) {
-    console.info('No action found for event:', event);
-    return;
-  }
-  (actions as { [key: string]: (event: Event) => void })[action](event);
-};
-
+// start server
 const start = async () => {
   const publicKey = signer.getPublicKey();
   const relayUrl = process.env.RELAY_URL!;
@@ -25,18 +19,20 @@ const start = async () => {
   console.info('Subscribing events directed to this public key:', publicKey);
 
   const relay = await Relay.connect(relayUrl);
+  const actionManager = new ActionManager(actions, relay);
 
+  // Subscribe for events addresed to me
   relay.subscribe(
     [
       {
-        kinds: [20001],
+        kinds: [20001], // Ephemeral
         '#p': [publicKey],
         since: Math.floor(Date.now() / 1000),
       },
     ],
     {
       onevent(event) {
-        handleEvent(event);
+        actionManager.handleEvent(event);
       },
     },
   );
