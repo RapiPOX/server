@@ -44,6 +44,7 @@ class ActionManager {
   ): Promise<void> {
     console.info(`Responding to Event: ${prevEvent.id}`);
 
+    responseEvent.tags.push(['p', prevEvent.pubkey]);
     responseEvent.tags.push(['e', prevEvent.id]);
     const event = signer.signEvent(responseEvent);
     await this.relay.publish(event);
