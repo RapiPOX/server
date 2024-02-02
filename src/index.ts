@@ -6,9 +6,10 @@ import 'websocket-polyfill';
 import { Relay } from 'nostr-tools';
 
 // Local
-import actions from './actions';
 import signer from './services/signer';
 import ActionManager from './services/actionManager';
+import { getActions } from './lib/utils';
+import path from 'path';
 
 // start server
 const start = async () => {
@@ -17,6 +18,8 @@ const start = async () => {
 
   console.info('Starting Server...');
   console.info('Subscribing events directed to this public key:', publicKey);
+
+  const actions = await getActions(path.join(__dirname, 'actions'));
 
   const relay = await Relay.connect(relayUrl);
   const actionManager = new ActionManager(actions, relay);
@@ -33,6 +36,9 @@ const start = async () => {
     {
       onevent(event) {
         actionManager.handleEvent(event);
+      },
+      onclose() {
+        console.error('Connection closed!');
       },
     },
   );
