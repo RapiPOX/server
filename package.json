@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "dev": "nodemon",
-    "build": "esbuild './src/**' --outdir=./dist --format=cjs --sourcemap=linked --sources-content=false --platform=node",
+    "build": "esbuild './src/**' --outdir='./dist' --format=cjs --sourcemap=linked --sources-content=false --platform=node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
