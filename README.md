@@ -8,9 +8,10 @@ First implementation of RapiPOX Server
 - [x] Relay connection
 - [x] Http request
 - [x] Get actions from files
+- [x] Dockerfile
+- [ ] Umbrelize
 - [ ] Whitelist protection
 - [ ] Tests
-- [ ] Dockerfile
 
 ## Getting started
 
