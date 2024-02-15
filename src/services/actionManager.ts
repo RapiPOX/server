@@ -6,12 +6,13 @@ import type { ActionIndex } from '../types/actions';
 
 // Local
 import signer from './signer';
+import NDK, { NDKEvent } from '@nostr-dev-kit/ndk';
 
 class ActionManager {
   public actions: ActionIndex;
-  public relay: Relay;
+  public relay: NDK;
 
-  constructor(actions: ActionIndex, relay: Relay) {
+  constructor(actions: ActionIndex, relay: NDK) {
     console.info(
       `Action Manager Initialized with ${Object.keys(actions).length} actions`,
     );
@@ -47,7 +48,7 @@ class ActionManager {
     responseEvent.tags.push(['p', prevEvent.pubkey]);
     responseEvent.tags.push(['e', prevEvent.id]);
     const event = signer.signEvent(responseEvent);
-    await this.relay.publish(event);
+    await new NDKEvent(this.relay, event).publish();
   }
 }
 

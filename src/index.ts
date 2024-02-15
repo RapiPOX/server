@@ -4,6 +4,7 @@ import 'websocket-polyfill';
 
 // Thirdpaty
 import { Relay } from 'nostr-tools';
+import NDK, { NDKKind, NDKRelay } from '@nostr-dev-kit/ndk';
 
 // Local
 import signer from './services/signer';
@@ -21,30 +22,37 @@ const start = async () => {
 
   const actions = await getActions(path.join(__dirname, 'actions'));
 
-  const relay = await Relay.connect(relayUrl);
-  const actionManager = new ActionManager(actions, relay);
+  const ndk = new NDK({
+    explicitRelayUrls: [relayUrl],
+  });
 
-  // Subscribe for events addresed to me
-  relay.subscribe(
-    [
+  // const relay = await Relay.connect(relayUrl);
+  const actionManager = new ActionManager(actions, ndk);
+
+  // Subscribe for events addressed to me
+  ndk.pool.on('relay:connect', (relay: NDKRelay) => {
+    console.info(`Connected to ${relayUrl}`);
+    const sub = ndk.subscribe(
+      [
+        {
+          kinds: [20001 as NDKKind], // Ephemeral
+          '#p': [publicKey],
+          since: Math.floor(Date.now() / 1000) - 10000,
+        },
+      ],
       {
-        kinds: [20001], // Ephemeral
-        '#p': [publicKey],
-        since: Math.floor(Date.now() / 1000),
+        closeOnEose: false,
       },
-    ],
-    {
-      onevent(event) {
-        actionManager.handleEvent(event);
-      },
-      onclose() {
-        console.error('Connection closed!');
-      },
-    },
-  );
+    );
 
-  await relay.connect();
-  console.info(`Connected to ${relayUrl}`);
+    sub.on('event', (event) => {
+      console.info('Handling Event...');
+      actionManager.handleEvent(event);
+    });
+  });
+
+  console.info(`Connecting to ${relayUrl}...`);
+  await ndk.connect();
 };
 
 start();
