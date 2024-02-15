@@ -20,6 +20,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@nostr-dev-kit/ndk": "^2.4.2",
     "dotenv": "^16.4.1",
     "glob": "^10.3.10",
     "nostr-tools": "^2.1.5",
