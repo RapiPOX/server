@@ -1,7 +1,8 @@
-import type { EventTemplate, NostrEvent } from 'nostr-tools';
+import { NDKEvent } from '@nostr-dev-kit/ndk';
+import type { EventTemplate } from 'nostr-tools';
 
 export type Action = (
-  event: NostrEvent,
+  event: NDKEvent,
   res: ActionResponse,
   context: any,
 ) => Promise<void>;
