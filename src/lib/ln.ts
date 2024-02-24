@@ -1,4 +1,6 @@
 import { NostrEvent } from '@nostr-dev-kit/ndk';
+import { LNURLResponse } from '../types/lnurl';
+import axios from 'axios';
 
 /**
  *
@@ -19,8 +21,19 @@ export const generateInvoice = async (
 };
 
 export const claimInvoice = async (
-  callbackUrl: string,
-  pr: string,
+  lnurlwResponse: LNURLResponse,
+  invoice: string,
 ): Promise<any> => {
-  return (await fetch(`${callbackUrl}/pr=${pr}`)).json();
+  const url = lnurlwResponse.callback;
+  const _response = await axios.get(url, {
+    params: { k1: lnurlwResponse.k1, pr: invoice },
+  });
+
+  if (_response.status < 200 || _response.status >= 300) {
+    throw new Error(`Error al intentar cobrar ${_response.status}}`);
+  }
+  if (_response.data.status !== 'OK') {
+    throw new Error(`Error al intentar cobrar ${_response.data.reason}}`);
+  }
+  return (await fetch(`${lnurlwResponse.callback}/pr=${invoice}`)).json();
 };
