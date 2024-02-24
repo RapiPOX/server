@@ -2,8 +2,7 @@
 import 'dotenv/config';
 import 'websocket-polyfill';
 
-// Thirdpaty
-import { Relay } from 'nostr-tools';
+// Thirdparty
 import NDK, { NDKKind, NDKRelay } from '@nostr-dev-kit/ndk';
 
 // Local

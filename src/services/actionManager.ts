@@ -1,5 +1,5 @@
 // Thirdparty
-import { EventTemplate, NostrEvent, Relay, finalizeEvent } from 'nostr-tools';
+import { EventTemplate, NostrEvent } from 'nostr-tools';
 
 // Types
 import type { ActionIndex } from '../types/actions';
@@ -20,7 +20,7 @@ class ActionManager {
     this.relay = relay;
   }
 
-  async handleEvent(event: NostrEvent): Promise<void> {
+  async handleEvent(event: NDKEvent): Promise<void> {
     const actionTag = event.tags.find((tag: string[]) => tag[0] === 'action');
 
     if (!actionTag) {
@@ -40,7 +40,7 @@ class ActionManager {
   }
 
   async respondEvent(
-    prevEvent: NostrEvent,
+    prevEvent: NDKEvent,
     responseEvent: EventTemplate,
   ): Promise<void> {
     console.info(`Responding to Event: ${prevEvent.id}`);
