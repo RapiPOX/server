@@ -1,6 +1,7 @@
 import { EventTemplate } from 'nostr-tools';
 
 export const generateZapEvent = (
+  pubkey: string,
   amountMillisats: number,
   relays: string[],
   postEventId?: string,
@@ -10,6 +11,7 @@ export const generateZapEvent = (
     content: '',
     created_at: Math.round(Date.now() / 1000),
     tags: [
+      ['p', pubkey],
       ['relays', ...relays],
       ['amount', amountMillisats.toString()],
       ['lnurl', 'lnurl'],
