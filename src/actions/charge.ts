@@ -23,16 +23,17 @@ const publicKey = signer.getPublicKey();
 const invoiceCallback = `https://api.lawallet.ar/lnurlp/${publicKey}/callback`;
 
 export default async function (event: NDKEvent, res: ActionResponse) {
-  console.info('Executed HTTP');
+  console.info('Executed CAHRGE');
   console.dir(event);
 
   try {
     const args = JSON.parse(event.content);
     const { pubkeys, lnurlw, amount } = args;
+    const newLnurlw = lnurlw.replace('lnurlw:', 'https:');
 
     // Get the LNURLw callback response
     const lnurlwResponse = (await (
-      await fetch(lnurlw)
+      await fetch(newLnurlw)
     ).json()) as LNURLResponse;
 
     // Generate zapEvent
