@@ -15,7 +15,7 @@ export const generateInvoice = async (
   let url = `${callbackUrl}?amount=${amount}`;
   if (zapEvent) {
     const encodedZapEvent = encodeURI(JSON.stringify(zapEvent));
-    url = `${callbackUrl}&nostr=${encodedZapEvent}&lnurl=1`;
+    url += `&nostr=${encodedZapEvent}&lnurl=1`;
   }
   return ((await fetch(url)).json() as any).pr as string;
 };
