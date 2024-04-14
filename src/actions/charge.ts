@@ -37,6 +37,7 @@ export default async function (event: NDKEvent, res: ActionResponse) {
 
     // Generate zapEvent
     const unsignedZapEvent = generateZapEvent(
+      publicKey,
       amount,
       [event.relay!.url],
       event.id,
