@@ -118,7 +118,7 @@ export default async function (event: NDKEvent, res: ActionResponse) {
     res({
       kind: 20001,
       content: JSON.stringify({
-        success: true,
+        success: false,
         error: (e as Error).message,
       }),
       tags: [['error', (e as Error).message]],
