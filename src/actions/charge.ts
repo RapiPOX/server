@@ -104,8 +104,14 @@ export default async function (event: NDKEvent, res: ActionResponse) {
     });
 
     // Send every transactions to the API Gateway
-    transactions.forEach((transaction) => {
-      axios.post('https://api.lawallet.ar/publish', transaction);
+    transactions.forEach(async (transaction) => {
+      const options: RequestInit = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(transaction),
+      };
+
+      await fetch('https://api.lawallet.ar/nostr/publish/', options);
     });
   } catch (e: unknown) {
     console.info(e);
