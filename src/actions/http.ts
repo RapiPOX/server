@@ -4,7 +4,7 @@ import type { ActionResponse } from '../types/actions';
 
 export default async function (event: NostrEvent, res: ActionResponse) {
   console.info('Executed HTTP');
-  console.dir(event);
+  // console.dir(event);
 
   try {
     const args = JSON.parse(event.content);

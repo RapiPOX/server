@@ -24,7 +24,7 @@ const invoiceCallback = `https://api.lawallet.ar/lnurlp/${publicKey}/callback`;
 
 export default async function (event: NDKEvent, res: ActionResponse) {
   console.info('Executed CAHRGE');
-  console.dir(event);
+  // console.dir(event);
 
   try {
     const args = JSON.parse(event.content);
