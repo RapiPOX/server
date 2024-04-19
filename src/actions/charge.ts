@@ -37,12 +37,9 @@ export default async function (event: NDKEvent, res: ActionResponse) {
     ).json()) as LNURLResponse;
 
     // Generate zapEvent
-    const unsignedZapEvent = generateZapEvent(
-      publicKey,
-      amount,
-      [event.relay!.url],
-      event.id,
-    );
+    const unsignedZapEvent = generateZapEvent(publicKey, amount, [
+      event.relay!.url,
+    ]);
     const zapEvent = signer.signEvent(unsignedZapEvent);
 
     // Generate Invoice
