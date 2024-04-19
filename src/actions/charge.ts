@@ -53,7 +53,7 @@ export default async function (event: NDKEvent, res: ActionResponse) {
 
     // Subscribe to the zapReceipt
     const sub = event.ndk!.subscribe(
-      { kinds: [9735], '#e': [zapEvent.id], authors: [urlxPublicKey] },
+      { kinds: [9735], authors: [urlxPublicKey], '#p': [publicKey] },
       {
         closeOnEose: false,
       },
