@@ -88,7 +88,7 @@ export default async function (event: NDKEvent, res: ActionResponse) {
     // Create a transaction splited for the pubkeys
     const transactions: NostrEvent[] = pubkeys.map((pubkey: string) => {
       return signer.signEvent({
-        kind: 20002,
+        kind: 1112,
         content: JSON.stringify({
           tokens: {
             BTC: Math.floor(amount / pubkeys.length),
