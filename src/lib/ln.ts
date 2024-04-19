@@ -17,7 +17,7 @@ export const generateInvoice = async (
     const encodedZapEvent = encodeURI(JSON.stringify(zapEvent));
     url += `&nostr=${encodedZapEvent}&lnurl=1`;
   }
-  return ((await fetch(url)).json() as any).pr as string;
+  return ((await (await fetch(url)).json()) as any).pr as string;
 };
 
 export const claimInvoice = async (
@@ -35,5 +35,5 @@ export const claimInvoice = async (
   if (_response.data.status !== 'OK') {
     throw new Error(`Error al intentar cobrar ${_response.data.reason}}`);
   }
-  return (await fetch(`${lnurlwResponse.callback}/pr=${invoice}`)).json();
+  return _response.data;
 };
